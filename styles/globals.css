@@ -29,8 +29,13 @@
   --font-mono:    'DM Mono', monospace;
 }
 
-html, body {
-  height: 100%;
+html, body, #__next {
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
   background: var(--black);
   color: var(--text);
   font-family: var(--font-body);
