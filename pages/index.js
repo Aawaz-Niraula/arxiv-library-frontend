@@ -24,7 +24,11 @@ export default function Home() {
     setLoading(true)
     try {
       const res = await axios.get(`${API}/papers`)
-      setPapers(res.data.papers || [])
+      const nextPapers = res.data.papers || []
+      setPapers(nextPapers)
+      setSelectedIds(prev =>
+        prev.filter(id => nextPapers.some(paper => paper.arxiv_id === id))
+      )
     } catch(e) { console.error(e) }
     setLoading(false)
   }
@@ -83,7 +87,11 @@ export default function Home() {
   async function deletePaper(e, id) {
     e.stopPropagation()
     if (!confirm('Remove this paper?')) return
-    try { await axios.delete(`${API}/papers/${id}`); fetchLibrary() }
+    try {
+      await axios.delete(`${API}/papers/${id}`)
+      setSelectedIds(prev => prev.filter(selectedId => selectedId !== id))
+      fetchLibrary()
+    }
     catch { alert('Failed to remove.') }
   }
 
